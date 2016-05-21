@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>SImplex algoritam</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h1 class="page-header">Simplex metoda
+          <small>Linearno programiranje</small>
+        </h1>
+      </div>
+    </div>
+    <div class="row" id="content">
+      <div class="col-lg-12">
+        <form method="POST" action="/simplex" id="simplex">
+          <div class="form-group">
+            <label for="teziste">Težište funkcije cilja:</label>
+            <select class="form-control" id="teziste" name="teziste">
+              <option>Minimum</option>
+              <option>Maximum</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="funkcija">Funkcija cilja</label>
+            <input type="funkcija" class="form-control" id="funkcija" name="funkcija">
+          </div>
+          <div class="form-group">
+            <label for="ogranicenja">Ograničenja</label>
+            <textarea id="ogranicenja" class="form-control" rows="10" name="ogranicenja"></textarea>
+          </div>
+          <button type="button" class="btn btn-default" id="primjer" onclick="example(true)">Primjer za maksimum</button>
+          <button type="button" class="btn btn-default" id="primjer" onclick="example(false)">Primjer za minimum</button>
+          <button type="submit" class="btn btn-default" id="rjesi">Rješi</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+  $("#simplex").submit(function (e) {
+    e.preventDefault();
+    $.ajax({
+            url: '/simplex',
+            type: 'post',
+            dataType: 'json',
+            data: $('form').serialize(),
+            success: function(data) {
+              var thead = ''
+              if ($('#teziste').val() === 'Minimum') {
+                thead = '<div class="row"><div class="col-lg-12"><h2>Rješenje:</h2><table class="table table-striped"><thead><tr><th>Min</th>';
+              } else {
+                thead = '<div class="row"><div class="col-lg-12"><h2>Rješenje:</h2><table class="table table-striped"><thead><tr><th>Max</th>';
+              }
+              console.log(data);
+              var tbody = '<tbody><tr><td>' + data.max + '</td>';
+              Object.keys(data).forEach(function(key,index) {
+                if (key != 'max' && key != 'tableaus') {
+                  thead += '<th>' + key + '</th>';
+                  tbody += ('<td>' + data[key] + '</td>');
+                } 
+              });
+              thead += '</tr></thead>';
+              var table = thead + tbody;
+              table += '</tr></tbody></table></div></div><button type="submit" class="btn btn-default" id="back" onclick="back()">Nazad</button>';
+              $('#content').html(table);
+             }
+        });
+    });
+    function back() {
+        location.reload();
+    }
+    function example(max) {
+        if (max) {
+          $('#teziste').val('Maximum');
+          $('#funkcija').val('1x + 1y + 2z');
+          $('#ogranicenja').val('2x + 1y + 1z <= 50,\n2x + 1y + 0z <= 36,\n1x + 0y + 1z = 10');
+        } else {
+          $('#teziste').val('Minimum');
+          $('#funkcija').val('50x + 30y + 45z');
+          $('#ogranicenja').val('1x + 0y + 0z >= 750,\n1x + 5y + 3z >= 1550,\n1x + 2y + 1z >= 2500');
+        }
+    }
+  </script>
+</body>
+</html>

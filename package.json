@@ -1,0 +1,32 @@
+{
+  "name": "car-simplex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hmilkovi/car-simplex.git"
+  },
+  "keywords": [
+    "siplex",
+    "js",
+    "nodejs",
+    "car"
+  ],
+  "author": "Hrvoje Milković",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hmilkovi/car-simplex/issues"
+  },
+  "homepage": "https://github.com/hmilkovi/car-simplex#readme",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "node-matrix": "^0.1.1",
+    "simplex-solver": "0.0.3"
+  }
+}
