@@ -1,11 +1,11 @@
 var YASMIJ = require('yasmij');
 
 
-exports.solve = function function_name (functionSimplex, vars, callback) {
+exports.solve = function function_name (type ,functionSimplex, vars, callback) {
 	console.log(vars);
 	var input = {
-		type: "maximize",
-		objective : functionSimplex,
+		type: type,
+		objective : functionSimplex.replace('\r',''),
 		constraints : vars
 	};
 	var result = YASMIJ.solve(input);

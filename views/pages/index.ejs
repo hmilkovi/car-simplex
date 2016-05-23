@@ -62,19 +62,12 @@
             dataType: 'json',
             data: $('form').serialize(),
             success: function(data) {
-              var thead = ''
-              if ($('#teziste').val() === 'Minimum') {
-                thead = '<div class="row"><div class="col-lg-12"><h2>Rješenje:</h2><table class="table table-striped"><thead><tr><th>Min</th>';
-              } else {
-                thead = '<div class="row"><div class="col-lg-12"><h2>Rješenje:</h2><table class="table table-striped"><thead><tr><th>Max</th>';
-              }
+              var tbody = '';
+              var thead = '<div class="row"><div class="col-lg-12"><h2>Rješenje:</h2><table class="table table-striped"><thead><tr>';
               console.log(data);
-              var tbody = '<tbody><tr><td>' + data.max + '</td>';
-              Object.keys(data).forEach(function(key,index) {
-                if (key != 'max' && key != 'tableaus') {
-                  thead += '<th>' + key + '</th>';
-                  tbody += ('<td>' + data[key] + '</td>');
-                } 
+              Object.keys(data.result).forEach(function(key,index) {
+                thead += '<th>' + key + '</th>';
+                tbody += ('<td>' + data.result[key] + '</td>');
               });
               thead += '</tr></thead>';
               var table = thead + tbody;
@@ -89,12 +82,12 @@
     function example(max) {
         if (max) {
           $('#teziste').val('Maximum');
-          $('#funkcija').val('1x + 1y + 2z');
-          $('#ogranicenja').val('2x + 1y + 1z <= 50,\n2x + 1y + 0z <= 36,\n1x + 0y + 1z = 10');
+          $('#funkcija').val('1x + 1y + 2c');
+          $('#ogranicenja').val('2x + 1y + 1c <= 50\n2x + 1y + 0c <= 36\n1x + 0y + 1c = 10');
         } else {
           $('#teziste').val('Minimum');
-          $('#funkcija').val('50x + 30y + 45z');
-          $('#ogranicenja').val('1x + 0y + 0z >= 750,\n1x + 5y + 3z >= 1550,\n1x + 2y + 1z >= 2500');
+          $('#funkcija').val('50x + 30y + 45c');
+          $('#ogranicenja').val('1x + 0y + 0c >= 750\n1x + 5y + 3c >= 1550\n1x + 2y + 1c >= 2500');
         }
     }
   </script>
