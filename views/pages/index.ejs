@@ -62,17 +62,24 @@
             dataType: 'json',
             data: $('form').serialize(),
             success: function(data) {
-              var tbody = '';
-              var thead = '<div class="row"><div class="col-lg-12"><h2>Rješenje:</h2><table class="table table-striped"><thead><tr>';
-              console.log(data);
-              Object.keys(data.result).forEach(function(key,index) {
-                thead += '<th>' + key + '</th>';
-                tbody += ('<td>' + data.result[key] + '</td>');
-              });
-              thead += '</tr></thead>';
-              var table = thead + tbody;
-              table += '</tr></tbody></table></div></div><button type="submit" class="btn btn-default" id="back" onclick="back()">Nazad</button>';
-              $('#content').html(table);
+              if (data.feasible) {
+                var tbody = '';
+                var thead = '<div class="row"><div class="col-lg-12"><h2>Rješenje:</h2><table class="table table-striped"><thead><tr>';
+                console.log(data);
+                Object.keys(data).forEach(function(key,index) {
+                  if (key === 'feasible') {
+                    continue;
+                  }
+                  thead += '<th>' + key + '</th>';
+                  tbody += ('<td>' + data[key] + '</td>');
+                });
+                thead += '</tr></thead>';
+                var table = thead + tbody;
+                table += '</tr></tbody></table></div></div><button type="submit" class="btn btn-default" id="back" onclick="back()">Nazad</button>';
+                $('#content').html(table);
+              } else {
+                $('#content').html('<p>Nema optimalnog rješenja!</p><button type="submit" class="btn btn-default" id="back" onclick="back()">Nazad</button>');
+              }
              }
         });
     });
@@ -82,12 +89,12 @@
     function example(max) {
         if (max) {
           $('#teziste').val('Maximum');
-          $('#funkcija').val('1x + 1y + 2c');
-          $('#ogranicenja').val('2x + 1y + 1c <= 50\n2x + 1y + 0c <= 36\n1x + 0y + 1c = 10');
+          $('#funkcija').val('1 x 1 y 2 c');
+          $('#ogranicenja').val('2 x 1 y 1 c <= 50\n2 x 1 y 0 c <= 36\n1 x 0 y  1 c = 10');
         } else {
           $('#teziste').val('Minimum');
-          $('#funkcija').val('50x + 30y + 45c');
-          $('#ogranicenja').val('1x + 0y + 0c >= 750\n1x + 5y + 3c >= 1550\n1x + 2y + 1c >= 2500');
+          $('#funkcija').val('50 x 30 y 45 c');
+          $('#ogranicenja').val('1 x 0 y 0 c >= 750\n1 x 5 y 3 c >= 1550\n1 x 2 y 1 c >= 2500');
         }
     }
   </script>

@@ -26,6 +26,7 @@
     "body-parser": "^1.15.1",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
+    "javascript-lp-solver": "^0.4.3",
     "node-matrix": "^0.1.1",
     "simplex-solver": "0.0.3",
     "yasmij": "^0.2.6"
