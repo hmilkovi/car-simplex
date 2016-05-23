@@ -19,7 +19,7 @@ app.get('/oi', function(req, res) {
     res.render('pages/index');
 });
 
-app.post('/oi/simplex', function(req, res) {
+app.post('/simplex', function(req, res) {
 	var ogranicenja = req.body.ogranicenja.replace('\r','').split('\n');
 	var funkcija = req.body.funkcija;
 	var re = /[a-zA-z]{1,}/g;
