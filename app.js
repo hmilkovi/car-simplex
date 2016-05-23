@@ -19,6 +19,7 @@ app.get('/oi', function(req, res) {
 app.post('/oi/simplex', function(req, res) {
 	var ogranicenja = req.body.ogranicenja.replace('\r','').split('\n');
 	var funkcija = req.body.funkcija.replace('\r','');
+	var variables = funkcija.match(/[a-zA-z]/g);
 	var type = "max: ";
 	if (req.body.teziste == 'Minimum') {
 		type = 'min: ';
@@ -36,6 +37,12 @@ app.post('/oi/simplex', function(req, res) {
 	  
 	// Solve the model
 	var data =  solver.Solve(model);
+
+	for (var i = 0; i < variables.length; i++) {
+		if (Object.keys(data).indexOf(variables[i]) < 0) {
+			data[variables[i]] = 0;
+		}
+	}
 
 	res.json(data);
 });
