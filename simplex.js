@@ -2,6 +2,7 @@ var YASMIJ = require('yasmij');
 
 
 exports.solve = function function_name (functionSimplex, vars, callback) {
+	console.log(vars);
 	var input = {
 		type: "maximize",
 		objective : functionSimplex,
