@@ -24,7 +24,7 @@
     </div>
     <div class="row" id="content">
       <div class="col-lg-12">
-        <form method="POST" action="/simplex" id="simplex">
+        <form id="simplex">
           <div class="form-group">
             <label for="teziste">Težište funkcije cilja:</label>
             <select class="form-control" id="teziste" name="teziste">
@@ -42,7 +42,7 @@
           </div>
           <button type="button" class="btn btn-default" id="primjer" onclick="example(true)">Primjer za maksimum</button>
           <button type="button" class="btn btn-default" id="primjer" onclick="example(false)">Primjer za minimum</button>
-          <button type="submit" class="btn btn-default" id="rjesi">Rješi</button>
+          <button type="button" class="btn btn-default" id="rjesi">Rješi</button>
         </form>
       </div>
     </div>
@@ -54,7 +54,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
   <script type="text/javascript">
-  $("#simplex").submit(function (e) {
+  $("#rjesi").click(function (e) {
     e.preventDefault();
     $.ajax({
             url: '/oi/simplex',
@@ -67,15 +67,14 @@
                 var thead = '<div class="row"><div class="col-lg-12"><h2>Rješenje:</h2><table class="table table-striped"><thead><tr>';
                 console.log(data);
                 Object.keys(data).forEach(function(key,index) {
-                  if (key === 'feasible') {
-                    continue;
+                  if (key !== 'feasible') {
+                    thead += '<th>' + ((key==='result') ? 'Z (funkcija cilja)' : key) + '</th>';
+                    tbody += ('<td>' + data[key] + '</td>');
                   }
-                  thead += '<th>' + key + '</th>';
-                  tbody += ('<td>' + data[key] + '</td>');
                 });
                 thead += '</tr></thead>';
                 var table = thead + tbody;
-                table += '</tr></tbody></table></div></div><button type="submit" class="btn btn-default" id="back" onclick="back()">Nazad</button>';
+                table += '<h4>Postoji jedno jedino optimalno rješenje!</h4></tr></tbody></table></div></div><button type="submit" class="btn btn-default" id="back" onclick="back()">Nazad</button>';
                 $('#content').html(table);
               } else {
                 $('#content').html('<p>Nema optimalnog rješenja!</p><button type="submit" class="btn btn-default" id="back" onclick="back()">Nazad</button>');
@@ -83,20 +82,20 @@
           }
       });
   });
-    function back() {
-        location.reload();
-    }
-    function example(max) {
-        if (max) {
-          $('#teziste').val('Maximum');
-          $('#funkcija').val('1 x 1 y 2 c');
-          $('#ogranicenja').val('2 x 1 y 1 c <= 50\n2 x 1 y 0 c <= 36\n1 x 0 y  1 c = 10');
-        } else {
-          $('#teziste').val('Minimum');
-          $('#funkcija').val('50 x 30 y 45 c');
-          $('#ogranicenja').val('1 x 0 y 0 c >= 750\n1 x 5 y 3 c >= 1550\n1 x 2 y 1 c >= 2500');
-        }
-    }
+  function back() {
+      location.reload();
+  }
+  function example(max) {
+      if (max) {
+        $('#teziste').val('Maximum');
+        $('#funkcija').val('1 x 1 y 2 c');
+        $('#ogranicenja').val('2 x 1 y 1 c <= 50\n2 x 1 y 0 c <= 36\n1 x 0 y  1 c = 10');
+      } else {
+        $('#teziste').val('Minimum');
+        $('#funkcija').val('50 x 30 y 45 c');
+        $('#ogranicenja').val('1 x 0 y 0 c >= 750\n1 x 5 y 3 c >= 1550\n1 x 2 y 1 c >= 2500');
+      }
+  }
   </script>
 </body>
 </html>

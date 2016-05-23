@@ -3,9 +3,6 @@ var app = express();
 var bodyParser = require("body-parser");
 var http = require('http');
 var path = require('path');
-var simplex = require('./simplex.js');
-var dual = require('./simplex-dual.js');
-var Matrix = require('node-matrix');
 var solver = require("javascript-lp-solver");
 
 // set the view engine to ejs
@@ -19,10 +16,9 @@ app.get('/oi', function(req, res) {
     res.render('pages/index');
 });
 
-app.post('/simplex', function(req, res) {
+app.post('/oi/simplex', function(req, res) {
 	var ogranicenja = req.body.ogranicenja.replace('\r','').split('\n');
-	var funkcija = req.body.funkcija;
-	var re = /[a-zA-z]{1,}/g;
+	var funkcija = req.body.funkcija.replace('\r','');
 	var type = "max: ";
 	if (req.body.teziste == 'Minimum') {
 		type = 'min: ';
@@ -43,6 +39,7 @@ app.post('/simplex', function(req, res) {
 
 	res.json(data);
 });
+//10.255.0.34
 app.listen(5000, "10.255.0.34", function () {
   console.log('App listening on port 5000!');
 });
